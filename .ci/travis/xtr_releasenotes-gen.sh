@@ -15,9 +15,15 @@ cd ../
 CS_RELEASE_VERSION=$(mvn -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec | sed 's/-SNAPSHOT//' )
 echo LATEST_RELEASE_TAG=$LATEST_RELEASE_TAG
 echo CS_RELEASE_VERSION=$CS_RELEASE_VERSION
+
+set +e
 java -jar contribution/releasenotes-builder/target/releasenotes-builder-1.0-all.jar \
         -localRepoPath checkstyle -startRef $LATEST_RELEASE_TAG -releaseNumber $CS_RELEASE_VERSION \
         -githubAuthToken $READ_ONLY_TOKEN -generateAll -publishXdoc
+RESULT=$?
+set +e
+
+test $RESULT -eq 0
 
 echo ==============================================
 echo
