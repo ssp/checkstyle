@@ -137,6 +137,18 @@ public class ImportOrderCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
+    public void testCaseStaticImportsBetween() throws Exception {
+        final DefaultConfiguration checkConfig = createModuleConfig(ImportOrderCheck.class);
+        checkConfig.addAttribute("groups", "java, javax");
+        checkConfig.addAttribute("separated", "true");
+        checkConfig.addAttribute("ordered", "true");
+        checkConfig.addAttribute("option", "bottom"); // What exactly to do here??
+        final String[] expected = CommonUtils.EMPTY_STRING_ARRAY;
+
+        verify(checkConfig, getPath("InputImportOrderStaticGroupsBetween.java"), expected);
+    }
+
+    @Test
     public void testCaseInsensitive() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(ImportOrderCheck.class);
         checkConfig.addAttribute("caseSensitive", "false");
